@@ -1,9 +1,9 @@
 const { body } = require('express-validator')
-const User = require('../models/user')
+const User = require('../models/User')
 
 exports.registerValidators = [
-	body('email')
-		.withMessage('Incorrect Email')
+	body('email', 'Incorrect Email')
+		// .withMessage('Incorrect Email')
 		.isEmail()
 		.custom(async (value, { req }) => {
 			try {
@@ -16,8 +16,8 @@ exports.registerValidators = [
 			}
 		})
 		.normalizeEmail(),
-	body('password')
-		.withMessage('The password has to have minimum six symbols')
+	body('password', 'The password has to have minimum six symbols')
+		// .withMessage('The password has to have minimum six symbols')
 		.isLength({ min: 6, max: 26 })
 		.isAlphanumeric()
 		.trim(),
@@ -29,14 +29,14 @@ exports.registerValidators = [
 			return true
 		})
 		.trim(),
-	body('username')
-		.withMessage('This username is incorrect')
+	body('username', 'This username is incorrect')
+		// .withMessage('This username is incorrect')
 		.isLength({ min: 2, max: 16 })
 ]
 
 exports.loginValidators = [
-	body('email')
-		.withMessage('Incorrect Email')
+	body('email', 'Incorrect Email')
+		// .withMessage('Incorrect Email')
 		.isEmail()
 		.custom(async (value, { req }) => {
 			try {
@@ -49,8 +49,8 @@ exports.loginValidators = [
 			}
 		})
 		.normalizeEmail(),
-	body('password')
-		.withMessage('Incorrect password')
+	body('password', 'Incorrect password')
+		// .withMessage('Incorrect password')
 		.isLength({ min: 6, max: 26 })
 		.isAlphanumeric()
 		.trim()

@@ -3,7 +3,7 @@ const { hash, compare } = require('bcryptjs')
 const config = require('config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
-const { check, validationResult } = require('express-validator')
+const { validationResult } = require('express-validator')
 const { registerValidators, loginValidators } = require('../utils/validators')
 
 const router = Router()
