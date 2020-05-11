@@ -3,7 +3,7 @@ const User = require('../models/user')
 
 exports.registerValidators = [
 	body('email')
-		.withMessage('Enter the correct Email')
+		.withMessage('Incorrect Email')
 		.isEmail()
 		.custom(async (value, { req }) => {
 			try {
@@ -18,7 +18,7 @@ exports.registerValidators = [
 		.normalizeEmail(),
 	body('password')
 		.withMessage('The password has to have minimum six symbols')
-		.isLength({ min: 6, max: 56 })
+		.isLength({ min: 6, max: 26 })
 		.isAlphanumeric()
 		.trim(),
 	body('confirm')
@@ -32,4 +32,26 @@ exports.registerValidators = [
 	body('username')
 		.withMessage('This username is incorrect')
 		.isLength({ min: 2, max: 16 })
+]
+
+exports.loginValidators = [
+	body('email')
+		.withMessage('Incorrect Email')
+		.isEmail()
+		.custom(async (value, { req }) => {
+			try {
+				const user = await User.findOne({ email: value })
+				if (!user) {
+					return Promise.reject('There is no user with this Email')
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		})
+		.normalizeEmail(),
+	body('password')
+		.withMessage('Incorrect password')
+		.isLength({ min: 6, max: 26 })
+		.isAlphanumeric()
+		.trim()
 ]

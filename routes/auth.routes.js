@@ -4,7 +4,7 @@ const config = require('config')
 const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 const { check, validationResult } = require('express-validator')
-const { registerValidators } = require('../utils/validators')
+const { registerValidators, loginValidators } = require('../utils/validators')
 
 const router = Router()
 
@@ -36,7 +36,46 @@ router.post('/register', registerValidators,
 
 			res.status(201).json({ message: 'The user was created successfully' })
 		} catch (err) {
-			res.status(201).json({ message: 'Something wrong' })
+			res.status(500).json({ message: 'Something wrong' })
 		}
 	}
 )
+
+// /api/auth/login
+router.post('/login', loginValidators,
+	async (req, res) => {
+		try {
+			const errors = validationResult(req)
+			if (!errors.isEmpty()) {
+				return res.status(400).json({
+					errors: errors.array(),
+					message: 'Incorrect login data'
+				})
+			}
+
+			const { email, password } = req.body
+
+			const user = await User.findOne({ email })
+			if (!user) {
+				return res.status(400).json({ message: 'There is no such user' })
+			}
+
+			const isMatch = await compare(password, user.password)
+			if (!isMatch) {
+				return res.status(400).json({ message: 'Incorrect password' })
+			}
+
+			const token = jwt.sign(
+				{ userId: user.id },
+				config.get('jwtSecret'),
+				{ expiresIn: '1h' }
+			)
+
+			res.json({ token, userId: user.id })
+		} catch (err) {
+			res.status(500).json({ message: 'Something wrong' })
+		}
+	}
+)
+
+module.exports = router
