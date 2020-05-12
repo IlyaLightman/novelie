@@ -66,7 +66,10 @@ router.post('/login', loginValidators,
 
 			const isMatch = await compare(password, user.password)
 			if (!isMatch) {
-				return res.status(400).json({ message: 'Incorrect password' })
+				return res.status(400).json({
+					errors: [{ msg: 'Incorrect password' }],
+					message: 'Incorrect password'
+				})
 			}
 
 			const token = jwt.sign(

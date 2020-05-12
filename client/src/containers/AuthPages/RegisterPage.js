@@ -7,7 +7,7 @@ import AuthButton from '../../components/AuthButton/AuthButton'
 import useHttp from '../../hooks/http.hook'
 
 const RegisterPage = () => {
-	const { loading, request, error, clearError } = useHttp()
+	const { /*loading,*/ request, error, clearError } = useHttp()
 	const invalidFields = []
 	const [success, setSuccess] = useState(false)
 
