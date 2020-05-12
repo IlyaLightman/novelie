@@ -1,0 +1,66 @@
+.loginPage {
+  display: flex;
+  height: 90vh;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  .auths {
+    display: flex;
+    height: 60vh;
+    width: 100vw;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+
+    .inputs {
+      display: flex;
+      width: 25%;
+      min-height: 50%;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .inputField {
+        width: 100%;
+      }
+
+      .buttons {
+        display: flex;
+        width: 100%;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 1rem;
+
+        .textButtons {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: flex-start;
+
+          p {
+            color: #444444;
+            margin: 0.5rem 0 0 0;
+          }
+        }
+      }
+    }
+
+    h1 {
+      color: #444444;
+      font-size: 10rem;
+      margin-bottom: 0;
+      font-family: "Sitka Text";
+    }
+
+    .head_p {
+      color: #444444;
+      font-size: 2rem;
+      margin: 0 0 1.5rem 0;
+      font-family: "Sitka Text";
+    }
+  }
+}

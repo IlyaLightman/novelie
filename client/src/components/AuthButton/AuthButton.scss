@@ -1,0 +1,21 @@
+.Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0px solid white;
+  border-radius: 1rem;
+  background: #A6A6A6;
+  width: 6rem;
+  height: 2rem;
+  cursor: pointer;
+  transition: 0.3s;
+
+  p {
+    font-family: "Sitka Text";
+    color: white;
+  }
+
+  &:hover {
+    background: #555555;
+  }
+}
