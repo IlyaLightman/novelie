@@ -13,6 +13,7 @@ router.post('/register', registerValidators,
 	async (req, res) => {
 		try {
 			const errors = validationResult(req)
+			console.log('routes errs', errors.isEmpty())
 
 			if (!errors.isEmpty()) {
 				return res.status(400).json({
@@ -21,16 +22,19 @@ router.post('/register', registerValidators,
 				})
 			}
 
-			const { email, password, username } = req.body
+			const { email, password, nickname } = req.body
 
-			const candidateByEmail = User.findOne({ email })
-			const candidateByUsername = User.findOne({ username })
-			if (candidateByEmail || candidateByUsername) {
-				return res.status(400).json({ message: 'User with this email or username already exists' })
+			const candidateByEmail = await User.findOne({ email })
+			const candidateByNickname = await User.findOne({ nickname })
+			if (candidateByEmail || candidateByNickname) {
+				return res.status(400).json({
+					errors: [{ msg: 'User with this email or username already exists' }],
+					message: 'User with this email or username already exists'
+				})
 			}
 
 			const hashedPassword = await hash(password, 12)
-			const user = new User({ email, password: hashedPassword, username })
+			const user = new User({ email, password: hashedPassword, nickname })
 
 			await user.save()
 
