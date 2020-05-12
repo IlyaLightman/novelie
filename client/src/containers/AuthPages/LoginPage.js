@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './authPages.scss'
+import { Redirect } from 'react-router-dom'
 import Radium from 'radium'
 import AuthInput from '../../components/AuthInput/AuthInput'
 import AuthButton from '../../components/AuthButton/AuthButton'
@@ -9,16 +10,16 @@ const LoginPage = () => {
 		email: '',
 		password: ''
 	})
+	const [redirect, setRedirect] = useState(false)
 
 	const changeHandler = (event, field) => {
 		const text = event.target.value
 		setUser({ ...user, [field]: text })
 	}
 
-	console.log(user)
-
 	return (
 		<div className='loginPage'>
+			{redirect ? <Redirect to='/register'/> : null}
 			<div className='auths'>
 				<div className='head'>
 					<h1>Novelie</h1>
@@ -61,8 +62,8 @@ const LoginPage = () => {
 								':hover': {
 									color: 'black'
 								}
-							}} keu='2'
-							   onClick={() => {}}
+							}} key='2'
+							   onClick={() => setRedirect(true)}
 							>Create account</p>
 						</div>
 					</div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './authPages.scss'
+import { Redirect } from 'react-router-dom'
 import Radium from 'radium'
 import AuthInput from '../../components/AuthInput/AuthInput'
 import AuthButton from '../../components/AuthButton/AuthButton'
@@ -8,6 +9,7 @@ import useHttp from '../../hooks/http.hook'
 const RegisterPage = () => {
 	const { loading, request, error, clearError } = useHttp()
 	const invalidFields = []
+	const [success, setSuccess] = useState(false)
 
 	if (Array.isArray(error)) {
 		error.forEach(err => invalidFields.push(err.param))
@@ -19,8 +21,10 @@ const RegisterPage = () => {
 		confirm: '',
 		nickname: ''
 	})
+	const [redirect, setRedirect] = useState(false)
 
 	const changeHandler = (event, field) => {
+		clearError()
 		const text = event.target.value
 		setUser({ ...user, [field]: text })
 	}
@@ -30,18 +34,25 @@ const RegisterPage = () => {
 
 		const data = await request('/api/auth/register', 'POST', { ...user })
 		console.log(data)
+		if (data.errors) return
+		setSuccess(true)
+		setTimeout(() => {
+			setRedirect(true)
+		}, 3000)
 	}
-
+	console.log(success)
 	return (
 		<div className='loginPage'>
+			{redirect ? <Redirect to='/login'/> : null}
 			<div className='auths'>
 				<div className='head'>
 					<h1>Novelie</h1>
 					<p className='head_p' style={{
 						fontSize: '1rem',
-						color: error ? 'red' : 'black'
+						color: error ? 'red' : (success ? 'green' : 'black')
 					}}
-					>{error ? `${error[0].msg }` : 'Create your own Novelie account.'}</p>
+					>{error ? `${error[0].msg }` : (success ?
+						'User created successfully' : 'Create your own Novelie account.')}</p>
 				</div>
 
 				<div className='inputs'>
@@ -86,7 +97,7 @@ const RegisterPage = () => {
 									color: 'black'
 								}
 							}} key='2'
-							   onClick={() => {}}
+							   onClick={() => setRedirect(true)}
 							>Back to Login</p>
 						</div>
 					</div>
