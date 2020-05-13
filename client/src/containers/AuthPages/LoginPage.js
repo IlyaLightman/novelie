@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './authPages.scss'
 import { Redirect } from 'react-router-dom'
 import Radium from 'radium'
 import AuthInput from '../../components/AuthInput/AuthInput'
 import AuthButton from '../../components/AuthButton/AuthButton'
 import useHttp from '../../hooks/http.hook'
+import { AuthContext } from '../../context/AuthContext'
 
 const LoginPage = () => {
 	const { /*loading,*/ request, error, clearError } = useHttp()
 	const [incorrectPassword, setIncorrectPassword] = useState(false)
 	const invalidFields = []
+
+	const auth = useContext(AuthContext)
 
 	if (Array.isArray(error)) {
 		error.forEach(err => invalidFields.push(err.param))
@@ -32,6 +35,8 @@ const LoginPage = () => {
 			setIncorrectPassword(true)
 			return
 		}
+
+		auth.login(data.token, data.userId)
 	}
 
 	return (
